@@ -2,9 +2,12 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 
+// GitHub Pages 仓库名
+const repoName = 'stock-query-app'
+
 export default defineConfig({
   // GitHub Pages 部署需要设置 base 路径
-  base: '/stock-query-app/',
+  base: `/${repoName}/`,
   
   plugins: [
     vue(),
@@ -17,15 +20,16 @@ export default defineConfig({
         theme_color: '#1976d2',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/stock-query-app/',
+        start_url: `/${repoName}/`,
+        scope: `/${repoName}/`,
         icons: [
           {
-            src: '/stock-query-app/icon-192x192.png',
+            src: `/${repoName}/icon-192x192.png`,
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/stock-query-app/icon-512x512.png',
+            src: `/${repoName}/icon-512x512.png`,
             sizes: '512x512',
             type: 'image/png'
           }
@@ -36,10 +40,23 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    // 确保生成 _redirects 或 404.html 用于 SPA
+    // 确保资源使用相对路径
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        manualChunks: undefined,
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.')
+          const ext = info[info.length - 1]
+          if (/\.(png|jpe?g|gif|svg|webp|ico)$/i.test(assetInfo.name)) {
+            return `assets/images/[name][extname]`
+          }
+          if (/\.css$/i.test(assetInfo.name)) {
+            return `assets/css/[name][extname]`
+          }
+          return `assets/[name][extname]`
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js'
       }
     }
   },
