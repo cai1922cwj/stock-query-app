@@ -3,6 +3,11 @@ import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  // GitHub Pages 部署需要设置 base 路径
+  // 格式: '/仓库名/'
+  // 如果是自定义域名，改为 base: '/'
+  base: '/stock-query-app/',
+  
   plugins: [
     vue(),
     VitePWA({
