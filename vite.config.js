@@ -4,8 +4,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   // GitHub Pages 部署需要设置 base 路径
-  // 格式: '/仓库名/'
-  // 如果是自定义域名，改为 base: '/'
   base: '/stock-query-app/',
   
   plugins: [
@@ -19,15 +17,15 @@ export default defineConfig({
         theme_color: '#1976d2',
         background_color: '#ffffff',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/stock-query-app/',
         icons: [
           {
-            src: '/icon-192x192.png',
+            src: '/stock-query-app/icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/icon-512x512.png',
+            src: '/stock-query-app/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
@@ -35,6 +33,16 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    // 确保生成 _redirects 或 404.html 用于 SPA
+    rollupOptions: {
+      output: {
+        manualChunks: undefined
+      }
+    }
+  },
   server: {
     port: 3000,
     host: true
