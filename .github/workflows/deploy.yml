@@ -23,11 +23,35 @@ jobs:
         with:
           node-version: '18'
           
+      - name: Debug - List files
+        run: |
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Files in root ==="
+          ls -la
+          echo "=== package.json exists? ==="
+          test -f package.json && echo "YES" || echo "NO"
+          echo "=== vite.config.js exists? ==="
+          test -f vite.config.js && echo "YES" || echo "NO"
+          
       - name: Install dependencies
-        run: npm install
+        run: |
+          echo "=== Installing dependencies ==="
+          npm install 2>&1
+          echo "=== Install completed ==="
         
       - name: Build
-        run: npm run build
+        run: |
+          echo "=== Starting build ==="
+          npm run build 2>&1
+          echo "=== Build completed ==="
+        
+      - name: Debug - List dist
+        run: |
+          echo "=== Dist directory ==="
+          ls -la dist/ 2>&1 || echo "dist directory not found"
+          echo "=== index.html exists? ==="
+          test -f dist/index.html && echo "YES" || echo "NO"
         
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
