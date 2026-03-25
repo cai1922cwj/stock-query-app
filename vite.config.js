@@ -40,7 +40,6 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    // 确保资源使用相对路径
     rollupOptions: {
       output: {
         manualChunks: undefined,
