@@ -120,6 +120,7 @@ onMounted(() => {
   padding: 16px;
   max-width: 600px;
   margin: 0 auto;
+  background: transparent;
 }
 
 .header {
@@ -127,12 +128,20 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
   font-size: 24px;
   font-weight: 700;
-  color: var(--primary-color);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .header-actions {
@@ -177,7 +186,8 @@ onMounted(() => {
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .more-link {
@@ -219,8 +229,10 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 40px 20px;
-  background: var(--card-bg);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .empty-icon {

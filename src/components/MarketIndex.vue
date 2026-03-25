@@ -10,6 +10,29 @@
     <div class="index-change" :class="getPriceClass(data?.changePercent)">
       {{ formatChange(data?.changePercent) }}
     </div>
+    <!-- 迷你趋势图 -->
+    <div class="mini-chart">
+      <svg viewBox="0 0 100 30" class="trend-line">
+        <polyline
+          :points="generateTrendPoints()"
+          fill="none"
+          :stroke="getTrendColor()"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <defs>
+          <linearGradient :id="'gradient-' + name" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" :stop-color="getTrendColor()" stop-opacity="0.3" />
+            <stop offset="100%" :stop-color="getTrendColor()" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <polygon
+          :points="generateTrendPoints() + ' 100,30 0,30'"
+          :fill="'url(#gradient-' + name + ')'"
+        />
+      </svg>
+    </div>
   </div>
 </template>
 
@@ -37,8 +60,30 @@ const marketLabel = computed(() => {
   return labels[props.market] || props.market
 })
 
+// 生成模拟趋势数据
+const generateTrendPoints = () => {
+  const points = []
+  const basePrice = props.data?.price || 3000
+  const volatility = basePrice * 0.02
+  
+  for (let i = 0; i <= 20; i++) {
+    const x = i * 5
+    const randomChange = (Math.random() - 0.5) * volatility
+    const y = 15 - (randomChange / volatility) * 10
+    points.push(`${x},${Math.max(2, Math.min(28, y))}`)
+  }
+  
+  return points.join(' ')
+}
+
+const getTrendColor = () => {
+  const changePercent = props.data?.changePercent
+  if (changePercent > 0) return '#f44336'
+  if (changePercent < 0) return '#4caf50'
+  return '#999'
+}
+
 const goToDetail = () => {
-  // 根据市场类型跳转到对应指数详情
   const codeMap = {
     '上证指数': 'sh000001',
     '深证成指': 'sz399001',
@@ -68,12 +113,19 @@ const getPriceClass = (changePercent) => {
 
 <style scoped>
 .market-index {
-  background: var(--card-bg);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
   padding: 16px;
   min-width: 140px;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.market-index:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 .market-index:active {
@@ -84,31 +136,52 @@ const getPriceClass = (changePercent) => {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .index-name {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
 .index-tag {
   font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: var(--bg-color);
-  color: var(--text-secondary);
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 500;
+}
+
+.index-tag.港股 {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.index-tag.美股 {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
 .index-price {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .index-change {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.mini-chart {
+  width: 100%;
+  height: 30px;
+  margin-top: 8px;
+}
+
+.trend-line {
+  width: 100%;
+  height: 100%;
 }
 </style>

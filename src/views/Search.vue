@@ -119,7 +119,23 @@ const hotSearchStocks = [
   { code: 'sh601398', name: '工商银行', market: 'A股' },
   { code: 'hk09988', name: '阿里巴巴', market: '港股' },
   { code: 'usAAPL', name: '苹果', market: '美股' },
-  { code: 'sz000858', name: '五粮液', market: 'A股' }
+  { code: 'sz000858', name: '五粮液', market: 'A股' },
+  { code: 'sh600036', name: '招商银行', market: 'A股' },
+  { code: 'sz002594', name: '比亚迪', market: 'A股' },
+  { code: 'sh601318', name: '中国平安', market: 'A股' },
+  { code: 'hk03690', name: '美团-W', market: '港股' },
+  { code: 'usMSFT', name: '微软', market: '美股' },
+  { code: 'usGOOGL', name: '谷歌', market: '美股' },
+  { code: 'usAMZN', name: '亚马逊', market: '美股' },
+  { code: 'sh300750', name: '宁德时代', market: 'A股' },
+  { code: 'hk01810', name: '小米集团', market: '港股' },
+  { code: 'usBABA', name: '阿里巴巴', market: '美股' },
+  { code: 'usNIO', name: '蔚来', market: '美股' },
+  { code: 'sh600276', name: '恒瑞医药', market: 'A股' },
+  { code: 'sz000333', name: '美的集团', market: 'A股' },
+  { code: 'hk09618', name: '京东集团', market: '港股' },
+  { code: 'usMETA', name: 'Meta', market: '美股' },
+  { code: 'usNFLX', name: '奈飞', market: '美股' }
 ]
 
 const doSearch = async () => {
@@ -161,7 +177,8 @@ const goBack = () => {
 <style scoped>
 .search-page {
   min-height: 100vh;
-  background: var(--bg-color);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-attachment: fixed;
 }
 
 .search-header {
@@ -169,8 +186,9 @@ const goBack = () => {
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .search-box {
@@ -296,8 +314,9 @@ const goBack = () => {
 
 .section-header h3 {
   font-size: 15px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .clear-all {
@@ -357,14 +376,21 @@ const goBack = () => {
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: var(--card-bg);
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.hot-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .hot-item:active {
-  background: var(--border-color);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .hot-rank {

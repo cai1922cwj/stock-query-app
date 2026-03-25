@@ -40,12 +40,31 @@
   left: 0;
   right: 0;
   height: 60px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
   display: flex;
   justify-content: space-around;
   align-items: center;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
   z-index: 100;
+}
+
+.tab-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  color: #666;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.tab-item.active {
+  color: #667eea;
+  font-weight: 600;
 }
 
 .tab-item {

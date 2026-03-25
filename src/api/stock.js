@@ -67,19 +67,99 @@ export const stockApi = {
     }
   },
   
-  // 搜索股票
+  // 搜索股票 - 支持更多股票代码
   searchStocks: async (keyword) => {
-    // 模拟搜索结果（实际项目中可以接入真实的搜索API）
+    // 扩展的股票数据库
     const mockStocks = [
+      // A股 - 指数
       { code: 'sh000001', name: '上证指数', market: 'A股' },
       { code: 'sz399001', name: '深证成指', market: 'A股' },
+      { code: 'sz399006', name: '创业板指', market: 'A股' },
+      { code: 'sh000016', name: '上证50', market: 'A股' },
+      { code: 'sh000300', name: '沪深300', market: 'A股' },
+      { code: 'sz399005', name: '中小板指', market: 'A股' },
+      
+      // A股 - 热门股票
       { code: 'sh600519', name: '贵州茅台', market: 'A股' },
       { code: 'sz000858', name: '五粮液', market: 'A股' },
       { code: 'sh601398', name: '工商银行', market: 'A股' },
       { code: 'sz000001', name: '平安银行', market: 'A股' },
+      { code: 'sh600036', name: '招商银行', market: 'A股' },
+      { code: 'sh601318', name: '中国平安', market: 'A股' },
+      { code: 'sh600276', name: '恒瑞医药', market: 'A股' },
+      { code: 'sz000333', name: '美的集团', market: 'A股' },
+      { code: 'sz000651', name: '格力电器', market: 'A股' },
+      { code: 'sh600887', name: '伊利股份', market: 'A股' },
+      { code: 'sh601012', name: '隆基绿能', market: 'A股' },
+      { code: 'sz002594', name: '比亚迪', market: 'A股' },
+      { code: 'sh600309', name: '万华化学', market: 'A股' },
+      { code: 'sh603288', name: '海天味业', market: 'A股' },
+      { code: 'sz300750', name: '宁德时代', market: 'A股' },
+      { code: 'sh688981', name: '中芯国际', market: 'A股' },
+      { code: 'sz002415', name: '海康威视', market: 'A股' },
+      { code: 'sh600900', name: '长江电力', market: 'A股' },
+      { code: 'sh601888', name: '中国中免', market: 'A股' },
+      { code: 'sz000568', name: '泸州老窖', market: 'A股' },
+      { code: 'sh600809', name: '山西汾酒', market: 'A股' },
+      { code: 'sz002142', name: '宁波银行', market: 'A股' },
+      { code: 'sh600030', name: '中信证券', market: 'A股' },
+      { code: 'sz000002', name: '万科A', market: 'A股' },
+      { code: 'sh601166', name: '兴业银行', market: 'A股' },
+      { code: 'sz000063', name: '中兴通讯', market: 'A股' },
+      { code: 'sh600438', name: '通威股份', market: 'A股' },
+      { code: 'sz002230', name: '科大讯飞', market: 'A股' },
+      { code: 'sh601668', name: '中国建筑', market: 'A股' },
+      { code: 'sz300059', name: '东方财富', market: 'A股' },
+      { code: 'sh600028', name: '中国石化', market: 'A股' },
+      { code: 'sh601857', name: '中国石油', market: 'A股' },
+      { code: 'sh600938', name: '中国海油', market: 'A股' },
+      { code: 'sh601728', name: '中国电信', market: 'A股' },
+      { code: 'sh600050', name: '中国联通', market: 'A股' },
+      { code: 'sh601728', name: '中国移动', market: 'A股' },
+      
+      // 用户提到的股票
+      { code: 'sz002053', name: '云南能投', market: 'A股' },
+      { code: 'sh600725', name: '云维股份', market: 'A股' },
+      
+      // 更多A股
+      { code: 'sh600519', name: '贵州茅台', market: 'A股' },
+      { code: 'sz000001', name: '平安银行', market: 'A股' },
+      { code: 'sh600000', name: '浦发银行', market: 'A股' },
+      { code: 'sz000002', name: '万科A', market: 'A股' },
+      { code: 'sh600004', name: '白云机场', market: 'A股' },
+      { code: 'sz000006', name: '深振业A', market: 'A股' },
+      { code: 'sh600007', name: '中国国贸', market: 'A股' },
+      { code: 'sz000008', name: '神州高铁', market: 'A股' },
+      { code: 'sh600009', name: '上海机场', market: 'A股' },
+      { code: 'sz000009', name: '中国宝安', market: 'A股' },
+      
+      // 港股
       { code: 'hk00700', name: '腾讯控股', market: '港股' },
       { code: 'hk09988', name: '阿里巴巴-SW', market: '港股' },
       { code: 'hk03690', name: '美团-W', market: '港股' },
+      { code: 'hk01810', name: '小米集团-W', market: '港股' },
+      { code: 'hk09618', name: '京东集团-SW', market: '港股' },
+      { code: 'hk01299', name: '友邦保险', market: '港股' },
+      { code: 'hk02318', name: '中国平安', market: '港股' },
+      { code: 'hk03988', name: '中国银行', market: '港股' },
+      { code: 'hk01398', name: '工商银行', market: '港股' },
+      { code: 'hk00939', name: '建设银行', market: '港股' },
+      { code: 'hk01288', name: '农业银行', market: '港股' },
+      { code: 'hk03968', name: '招商银行', market: '港股' },
+      { code: 'hk02331', name: '李宁', market: '港股' },
+      { code: 'hk02020', name: '安踏体育', market: '港股' },
+      { code: 'hk01898', name: '中煤能源', market: '港股' },
+      { code: 'hk00883', name: '中国海洋石油', market: '港股' },
+      { code: 'hk00386', name: '中国石油化工', market: '港股' },
+      { code: 'hk00857', name: '中国石油股份', market: '港股' },
+      { code: 'hk00762', name: '中国联通', market: '港股' },
+      { code: 'hk00728', name: '中国电信', market: '港股' },
+      { code: 'hk00941', name: '中国移动', market: '港股' },
+      { code: 'hk01038', name: '长江基建', market: '港股' },
+      { code: 'hk00005', name: '汇丰控股', market: '港股' },
+      { code: 'hk00001', name: '长和', market: '港股' },
+      
+      // 美股
       { code: 'usAAPL', name: '苹果', market: '美股' },
       { code: 'usTSLA', name: '特斯拉', market: '美股' },
       { code: 'usNVDA', name: '英伟达', market: '美股' },
@@ -90,16 +170,100 @@ export const stockApi = {
       { code: 'usJD', name: '京东', market: '美股' },
       { code: 'usNIO', name: '蔚来', market: '美股' },
       { code: 'usLI', name: '理想汽车', market: '美股' },
-      { code: 'usXPEV', name: '小鹏汽车', market: '美股' }
+      { code: 'usXPEV', name: '小鹏汽车', market: '美股' },
+      { code: 'usMETA', name: 'Meta', market: '美股' },
+      { code: 'usNFLX', name: '奈飞', market: '美股' },
+      { code: 'usAMD', name: 'AMD', market: '美股' },
+      { code: 'usINTC', name: '英特尔', market: '美股' },
+      { code: 'usCRM', name: 'Salesforce', market: '美股' },
+      { code: 'usADBE', name: 'Adobe', market: '美股' },
+      { code: 'usORCL', name: '甲骨文', market: '美股' },
+      { code: 'usIBM', name: 'IBM', market: '美股' },
+      { code: 'usUBER', name: '优步', market: '美股' },
+      { code: 'usLYFT', name: 'Lyft', market: '美股' },
+      { code: 'usABNB', name: '爱彼迎', market: '美股' },
+      { code: 'usCOIN', name: 'Coinbase', market: '美股' },
+      { code: 'usPLTR', name: 'Palantir', market: '美股' },
+      { code: 'usSNOW', name: 'Snowflake', market: '美股' },
+      { code: 'usZM', name: 'Zoom', market: '美股' },
+      { code: 'usROKU', name: 'Roku', market: '美股' },
+      { code: 'usSQ', name: 'Block', market: '美股' },
+      { code: 'usPYPL', name: 'PayPal', market: '美股' },
+      { code: 'usV', name: 'Visa', market: '美股' },
+      { code: 'usMA', name: '万事达', market: '美股' },
+      { code: 'usJPM', name: '摩根大通', market: '美股' },
+      { code: 'usBAC', name: '美国银行', market: '美股' },
+      { code: 'usWFC', name: '富国银行', market: '美股' },
+      { code: 'usGS', name: '高盛', market: '美股' },
+      { code: 'usMS', name: '摩根士丹利', market: '美股' },
+      { code: 'usC', name: '花旗集团', market: '美股' },
+      { code: 'usBRK', name: '伯克希尔', market: '美股' },
+      { code: 'usJNJ', name: '强生', market: '美股' },
+      { code: 'usPFE', name: '辉瑞', market: '美股' },
+      { code: 'usMRNA', name: 'Moderna', market: '美股' },
+      { code: 'usPFE', name: '辉瑞', market: '美股' },
+      { code: 'usUNH', name: '联合健康', market: '美股' },
+      { code: 'usABBV', name: '艾伯维', market: '美股' },
+      { code: 'usT', name: 'AT&T', market: '美股' },
+      { code: 'usVZ', name: 'Verizon', market: '美股' },
+      { code: 'usTMUS', name: 'T-Mobile', market: '美股' },
+      { code: 'usDIS', name: '迪士尼', market: '美股' },
+      { code: 'usCMCSA', name: '康卡斯特', market: '美股' },
+      { code: 'usNKE', name: '耐克', market: '美股' },
+      { code: 'usSBUX', name: '星巴克', market: '美股' },
+      { code: 'usMCD', name: '麦当劳', market: '美股' },
+      { code: 'usKO', name: '可口可乐', market: '美股' },
+      { code: 'usPEP', name: '百事', market: '美股' },
+      { code: 'usWMT', name: '沃尔玛', market: '美股' },
+      { code: 'usTGT', name: '塔吉特', market: '美股' },
+      { code: 'usHD', name: '家得宝', market: '美股' },
+      { code: 'usLOW', name: '劳氏', market: '美股' },
+      { code: 'usCOST', name: '好市多', market: '美股' },
+      { code: 'usTSLA', name: '特斯拉', market: '美股' },
+      { code: 'usF', name: '福特汽车', market: '美股' },
+      { code: 'usGM', name: '通用汽车', market: '美股' },
+      { code: 'usTM', name: '丰田汽车', market: '美股' },
+      { code: 'usHMC', name: '本田汽车', market: '美股' },
+      { code: 'usXOM', name: '埃克森美孚', market: '美股' },
+      { code: 'usCVX', name: '雪佛龙', market: '美股' },
+      { code: 'usCOP', name: '康菲石油', market: '美股' },
+      { code: 'usOXY', name: '西方石油', market: '美股' },
+      { code: 'usBA', name: '波音', market: '美股' },
+      { code: 'usLMT', name: '洛克希德马丁', market: '美股' },
+      { code: 'usRTX', name: '雷神技术', market: '美股' },
+      { code: 'usGE', name: '通用电气', market: '美股' },
+      { code: 'usCAT', name: '卡特彼勒', market: '美股' },
+      { code: 'usDE', name: '迪尔', market: '美股' },
+      { code: 'usMMM', name: '3M', market: '美股' },
+      { code: 'usHON', name: '霍尼韦尔', market: '美股' },
+      { code: 'usUPS', name: '联合包裹', market: '美股' },
+      { code: 'usFDX', name: '联邦快递', market: '美股' }
     ]
     
     if (!keyword) return []
     
     const lowerKeyword = keyword.toLowerCase()
-    return mockStocks.filter(stock => 
+    const results = mockStocks.filter(stock => 
       stock.name.includes(keyword) || 
       stock.code.toLowerCase().includes(lowerKeyword)
     )
+    
+    // 如果用户输入的是纯数字，假设是A股代码，自动添加前缀
+    if (/^\d{6}$/.test(keyword)) {
+      const shCode = 'sh' + keyword
+      const szCode = 'sz' + keyword
+      const shStock = mockStocks.find(s => s.code === shCode)
+      const szStock = mockStocks.find(s => s.code === szCode)
+      
+      if (shStock && !results.find(r => r.code === shCode)) {
+        results.unshift(shStock)
+      }
+      if (szStock && !results.find(r => r.code === szCode)) {
+        results.unshift(szStock)
+      }
+    }
+    
+    return results
   },
   
   // 获取市场概览

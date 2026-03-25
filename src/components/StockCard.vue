@@ -57,11 +57,18 @@ const getPriceClass = (changePercent) => {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background: var(--card-bg);
-  border-radius: 12px;
-  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  margin-bottom: 10px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.stock-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
 .stock-card:active {
