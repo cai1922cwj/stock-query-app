@@ -28,10 +28,17 @@ jobs:
           node-version: '20'
           
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install || (cat npm-debug.log 2>/dev/null && exit 1)
         
-      - name: Build
-        run: npm run build
+      - name: Build with error output
+        run: |
+          npm run build 2>&1 || (echo "BUILD FAILED" && exit 1)
+        
+      - name: Check dist
+        run: |
+          ls -la dist/
+          head -20 dist/index.html
         
       - name: Setup Pages
         uses: actions/configure-pages@v4
