@@ -1,4 +1,4 @@
-# GitHub Pages 部署工作流 - 使用gh-pages分支
+# GitHub Pages 部署工作流
 name: Deploy to GitHub Pages
 
 on:
@@ -21,15 +21,36 @@ jobs:
         with:
           node-version: '20'
           
+      - name: List files before install
+        run: |
+          echo "=== Files in root ==="
+          ls -la
+          echo "=== package.json ==="
+          cat package.json
+          
       - name: Install dependencies
-        run: npm install
-        continue-on-error: true
-        
+        run: |
+          npm install
+          echo "=== Install completed ==="
+          
       - name: Build
-        run: npm run build
-        continue-on-error: true
-        
-      - name: Deploy to gh-pages branch
+        run: |
+          echo "=== Starting build ==="
+          npm run build
+          echo "=== Build completed ==="
+          
+      - name: List dist directory
+        run: |
+          echo "=== Dist directory ==="
+          ls -la dist/ || echo "dist not found"
+          if [ -f dist/index.html ]; then
+            echo "=== index.html exists ==="
+            head -30 dist/index.html
+          else
+            echo "=== index.html NOT FOUND ==="
+          fi
+          
+      - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
