@@ -21,36 +21,33 @@ jobs:
         with:
           node-version: '20'
           
-      - name: List files before install
+      - name: Debug - Show all files
         run: |
-          echo "=== Files in root ==="
+          set -x
+          pwd
           ls -la
-          echo "=== package.json ==="
+          echo "---"
           cat package.json
           
       - name: Install dependencies
         run: |
+          set -x
           npm install
-          echo "=== Install completed ==="
+          echo "Install exit code: $?"
           
       - name: Build
         run: |
-          echo "=== Starting build ==="
+          set -x
           npm run build
-          echo "=== Build completed ==="
+          echo "Build exit code: $?"
           
-      - name: List dist directory
+      - name: Check dist
         run: |
-          echo "=== Dist directory ==="
-          ls -la dist/ || echo "dist not found"
-          if [ -f dist/index.html ]; then
-            echo "=== index.html exists ==="
-            head -30 dist/index.html
-          else
-            echo "=== index.html NOT FOUND ==="
-          fi
+          set -x
+          ls -la dist/
+          cat dist/index.html | head -50
           
-      - name: Deploy to gh-pages
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
