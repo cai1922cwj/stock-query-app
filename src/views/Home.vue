@@ -86,13 +86,13 @@ const marketData = computed(() => stockStore.marketData)
 const favoriteList = computed(() => stockStore.favoriteList)
 const hotStocks = computed(() => stockStore.hotStocks)
 
-const marketIndices = [
-  { name: '上证指数', market: 'A股', key: 'shanghai' },
-  { name: '深证成指', market: 'A股', key: 'shenzhen' },
-  { name: '创业板指', market: 'A股', key: 'chinext' },
-  { name: '恒生指数', market: '港股', key: 'hangseng' },
-  { name: '纳斯达克', market: '美股', key: 'nasdaq' }
-]
+const marketIndices = {
+  shanghai: { name: '上证指数', market: 'A股' },
+  shenzhen: { name: '深证成指', market: 'A股' },
+  chinext: { name: '创业板指', market: 'A股' },
+  hangseng: { name: '恒生指数', market: '港股' },
+  nasdaq: { name: '纳斯达克', market: '美股' }
+}
 
 const refresh = async () => {
   loading.value = true
