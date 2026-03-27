@@ -34,8 +34,9 @@ import { computed } from 'vue'
 
 const props = defineProps({
   name: String,
-  market: String,
-  data: Object
+  market: { type: String, default: 'A股' },
+  data: Object,
+  code: String  // 新增
 })
 
 const displayValue = computed(() => {
@@ -50,17 +51,18 @@ const displayChange = computed(() => {
 
 const goToDetail = () => {
   const codeMap = {
-    '上证指数': 'sh000001',
-    '深证成指': 'sz399001',
-    '创业板指': 'sz399006',
-    '恒生指数': 'hkHSI',
-    '纳斯达克': 'usIXIC'
+    shanghai: 'sh000001',
+    shenzhen: 'sz399001',
+    chinext: 'sz399006',
+    hangseng: 'hkHSI',
+    nasdaq: 'usIXIC'
   }
-  const code = codeMap[props.name]
+  const code = props.code || codeMap[props.name]
   if (code) {
     router.push(`/stock/${code}`)
   }
 }
+
 
 
   
