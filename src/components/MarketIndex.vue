@@ -93,14 +93,17 @@ const chartPoints = computed(() => {
 
 <style scoped>
 .market-index {
-  min-width: 140px;
-  padding: 16px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
+  padding: 16px;
+  width: 140px;        /* 修改：min-width 改为 width */
+  flex-shrink: 0;      /* 添加：防止卡片被压缩 */
+  cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
 }
+
 
 .market-index:hover {
   transform: translateY(-2px);
