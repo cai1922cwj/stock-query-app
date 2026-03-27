@@ -34,9 +34,12 @@ import { computed } from 'vue'
 
 const props = defineProps({
   name: String,
-  market: { type: String, default: 'A股' },
+  market: {
+    type: String,
+    default: 'A股'
+  },
   data: Object,
-  code: String  // 新增
+  code: String
 })
 
 const displayValue = computed(() => {
