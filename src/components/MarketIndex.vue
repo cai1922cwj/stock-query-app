@@ -143,9 +143,18 @@ const chartPoints = computed(() => {
 }
 
 .mini-chart {
-  margin-top: 8px;
+  width: 100%;
   height: 30px;
+  margin-top: 8px;
+  overflow: hidden;    /* 添加：防止图表溢出 */
 }
+
+.trend-line {
+  width: 100%;
+  height: 100%;
+  display: block;      /* 添加：确保正确显示 */
+}
+
 
 .chart-svg {
   width: 100%;
