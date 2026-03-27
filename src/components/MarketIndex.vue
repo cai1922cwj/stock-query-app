@@ -99,13 +99,18 @@ const chartPoints = computed(() => {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   padding: 16px;
-  width: 140px;        /* 修改：min-width 改为 width */
-  flex-shrink: 0;      /* 添加：防止卡片被压缩 */
+  width: 140px;
+  min-width: 140px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  display: inline-block;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
+  vertical-align: top;
 }
+
 
 
 .market-index:hover {
