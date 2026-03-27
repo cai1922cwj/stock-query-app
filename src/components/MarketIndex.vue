@@ -48,6 +48,22 @@ const displayChange = computed(() => {
   return `${sign}${props.data.changePercent.toFixed(2)}%`
 })
 
+const goToDetail = () => {
+  const codeMap = {
+    '上证指数': 'sh000001',
+    '深证成指': 'sz399001',
+    '创业板指': 'sz399006',
+    '恒生指数': 'hkHSI',
+    '纳斯达克': 'usIXIC'
+  }
+  const code = codeMap[props.name]
+  if (code) {
+    router.push(`/stock/${code}`)
+  }
+}
+
+
+  
 const trendClass = computed(() => {
   if (!props.data?.changePercent) return 'flat'
   return props.data.changePercent > 0 ? 'up' : 'down'
