@@ -222,7 +222,9 @@ onMounted(() => {
 .market-list {
   display: flex;
   gap: 12px;
+  width: max-content;  /* 添加这一行 */
 }
+
 
 .stock-list {
   display: flex;
