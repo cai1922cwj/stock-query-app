@@ -266,29 +266,32 @@ export const stockApi = {
     return results
   },
   
-  // 获取市场概览
-  getMarketOverview: async () => {
-    const codes = ['sh000001', 'sz399001', 'sz399006', 'hk00700', 'usAAPL']
-    try {
-      const stocks = await stockApi.getRealtimeQuote(codes)
-      return {
-        shanghai: stocks.find(s => s.code === 'sh000001'),
-        shenzhen: stocks.find(s => s.code === 'sz399001'),
-        chinext: stocks.find(s => s.code === 'sz399006'),
-        hangseng: stocks.find(s => s.code === 'hk00700'),
-        nasdaq: stocks.find(s => s.code === 'usAAPL')
-      }
-    } catch (error) {
-      // 返回模拟数据
-      return {
-        shanghai: { name: '上证指数', price: 3050.32, changePercent: 0.52 },
-        shenzhen: { name: '深证成指', price: 9876.54, changePercent: -0.23 },
-        chinext: { name: '创业板指', price: 1987.65, changePercent: 1.15 },
-        hangseng: { name: '恒生指数', price: 16543.21, changePercent: 0.88 },
-        nasdaq: { name: '纳斯达克', price: 14567.89, changePercent: 1.23 }
-      }
+ // 获取市场概览
+getMarketOverview: async () => {
+  // 使用正确的腾讯API代码格式
+  const codes = ['sh000001', 'sz399001', 'sz399006', 'hkHSI', 'usIXIC']
+  try {
+    const stocks = await stockApi.getRealtimeQuote(codes)
+    return {
+      shanghai: stocks.find(s => s.code === 'sh000001'),
+      shenzhen: stocks.find(s => s.code === 'sz399001'),
+      chinext: stocks.find(s => s.code === 'sz399006'),
+      hangseng: stocks.find(s => s.code === 'hkHSI'),
+      nasdaq: stocks.find(s => s.code === 'usIXIC')
     }
-  },
+  } catch (error) {
+    console.error('获取市场数据失败:', error)
+    // 返回模拟数据，确保字段完整
+    return {
+      shanghai: { code: 'sh000001', name: '上证指数', price: 3050.32, changePercent: 0.52 },
+      shenzhen: { code: 'sz399001', name: '深证成指', price: 9876.54, changePercent: -0.23 },
+      chinext: { code: 'sz399006', name: '创业板指', price: 1987.65, changePercent: 1.15 },
+      hangseng: { code: 'hkHSI', name: '恒生指数', price: 16543.21, changePercent: 0.88 },
+      nasdaq: { code: 'usIXIC', name: '纳斯达克', price: 14567.89, changePercent: 1.23 }
+    }
+  }
+},
+
   
   // 获取热门股票
   getHotStocks: async () => {
