@@ -21,13 +21,16 @@
       </div>
       <div class="market-scroll">
         <div class="market-list">
-          <MarketIndex 
-            v-for="(item, key) in marketIndices" 
-            :key="key"
-            :name="item.name"
-            :market="item.market"
-            :data="marketData?.[key]"
-          />
+        <MarketIndex 
+          v-for="(item, key) in marketIndices" 
+          :key="key"
+          :name="item.name"
+          :market="item.market"
+          :data="marketData?.[key]"
+          :code="key"
+        />
+
+
         </div>
       </div>
     </section>
