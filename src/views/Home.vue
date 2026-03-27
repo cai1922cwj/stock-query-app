@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 头部 -->
     <header class="header">
-      <h1 class="logo">股票查询</h1>
+      <h1 class="logo">蔡孑夫@股票动态</h1>
       <div class="header-actions">
         <button class="icon-btn" @click="refresh">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
