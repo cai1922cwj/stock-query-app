@@ -454,56 +454,24 @@ const loadChartData = async () => {
 const renderIntradayChart = (data) => {
   const prices = data.map(item => item.price)
   const times = data.map(item => item.time)
-  const minPrice = Math.min(...prices)
-  const maxPrice = Math.max(...prices)
-  const isUp = prices[prices.length - 1] >= prices[0]
-  const lineColor = isUp ? '#00d26a' : '#ff4757'
   
   chartInstance.setOption({
-    backgroundColor: 'transparent',
-    grid: { top: 20, left: 10, right: 10, bottom: 25 },
-    tooltip: {
-      trigger: 'axis',
-      backgroundColor: 'rgba(255, 255, 255, 0.95)',
-      formatter: function(params) {
-        return `<div style="font-weight:600">${params[0].axisValue}</div>
-                <div style="color:${lineColor};font-weight:600">价格: ¥${params[0].value.toFixed(2)}</div>`
-      }
-    },
-    xAxis: {
-      type: 'category',
-      data: times,
-      axisLabel: {
-        color: 'rgba(255, 255, 255, 0.7)',
-        fontSize: 10,
-        interval: Math.floor(times.length / 4)
-      }
-    },
-    yAxis: {
-      type: 'value',
-      scale: true,
-      min: minPrice * 0.998,
-      max: maxPrice * 1.002,
-      splitLine: {
-        lineStyle: { color: 'rgba(255, 255, 255, 0.1)', type: 'dashed' }
-      },
-      axisLabel: { color: 'rgba(255, 255, 255, 0.7)', fontSize: 10 }
-    },
+    grid: { top: 10, left: 0, right: 0, bottom: 20 },
+    xAxis: { type: 'category', data: times, show: false },
+    yAxis: { type: 'value', show: false, scale: true },
     series: [{
       type: 'line',
       data: prices,
       smooth: true,
-      symbol: 'circle',
-      symbolSize: 4,
-      showSymbol: false,
-      lineStyle: { color: lineColor, width: 2, shadowColor: lineColor, shadowBlur: 10 },
+      symbol: 'none',
+      lineStyle: { color: '#1976d2', width: 1.5 },
       areaStyle: {
         color: {
           type: 'linear',
           x: 0, y: 0, x2: 0, y2: 1,
           colorStops: [
-            { offset: 0, color: isUp ? 'rgba(0, 210, 106, 0.4)' : 'rgba(255, 71, 87, 0.4)' },
-            { offset: 1, color: 'rgba(255, 255, 255, 0.05)' }
+            { offset: 0, color: 'rgba(25, 118, 210, 0.2)' },
+            { offset: 1, color: 'rgba(25, 118, 210, 0)' }
           ]
         }
       }
@@ -512,58 +480,28 @@ const renderIntradayChart = (data) => {
 }
 
 
+
 const renderKlineChart = (data) => {
   const klineData = data.map(item => [item.open, item.close, item.low, item.high])
   const dates = data.map(item => item.date)
-  const volumes = data.map(item => item.volume || 0)
-  
-  // 计算MA均线
-  const calculateMA = (dayCount) => {
-    const result = []
-    for (let i = 0; i < data.length; i++) {
-      if (i < dayCount - 1) { result.push('-'); continue }
-      let sum = 0
-      for (let j = 0; j < dayCount; j++) sum += data[i - j].close
-      result.push((sum / dayCount).toFixed(2))
-    }
-    return result
-  }
   
   chartInstance.setOption({
-    backgroundColor: 'transparent',
-    grid: [
-      { left: 10, right: 10, top: 20, height: 140 },
-      { left: 10, right: 10, top: 170, height: 50 }
-    ],
-    tooltip: {
-      trigger: 'axis',
-      backgroundColor: 'rgba(255, 255, 255, 0.95)',
-      formatter: function(params) {
-        const kData = klineData[params[0].dataIndex]
-        return `<div style="font-weight:600">${params[0].axisValue}</div>
-                <div style="color:#f44336">开: ¥${kData[0].toFixed(2)}</div>
-                <div style="color:#00d26a">收: ¥${kData[1].toFixed(2)}</div>
-                <div style="color:#ff9800">高: ¥${kData[3].toFixed(2)}</div>
-                <div style="color:#2196f3">低: ¥${kData[2].toFixed(2)}</div>`
+    grid: { top: 10, left: 0, right: 0, bottom: 20 },
+    xAxis: { type: 'category', data: dates, show: false },
+    yAxis: { type: 'value', show: false, scale: true },
+    series: [{
+      type: 'candlestick',
+      data: klineData,
+      itemStyle: {
+        color: '#f44336',
+        color0: '#4caf50',
+        borderColor: '#f44336',
+        borderColor0: '#4caf50'
       }
-    },
-    xAxis: [
-      { type: 'category', data: dates, gridIndex: 0, axisLabel: { show: false } },
-      { type: 'category', data: dates, gridIndex: 1, axisLabel: { color: 'rgba(255,255,255,0.7)', fontSize: 10 } }
-    ],
-    yAxis: [
-      { type: 'value', gridIndex: 0, scale: true, splitLine: { lineStyle: { color: 'rgba(255,255,255,0.1)', type: 'dashed' } }, axisLabel: { color: 'rgba(255,255,255,0.7)', fontSize: 10 } },
-      { type: 'value', gridIndex: 1, splitLine: { show: false }, axisLabel: { show: false } }
-    ],
-    series: [
-      { type: 'candlestick', xAxisIndex: 0, yAxisIndex: 0, data: klineData, itemStyle: { color: '#f44336', color0: '#00d26a', borderColor: '#f44336', borderColor0: '#00d26a' } },
-      { name: 'MA5', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: calculateMA(5), smooth: true, symbol: 'none', lineStyle: { color: '#ffd700', width: 1 } },
-      { name: 'MA10', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: calculateMA(10), smooth: true, symbol: 'none', lineStyle: { color: '#00d2ff', width: 1 } },
-      { name: 'MA20', type: 'line', xAxisIndex: 0, yAxisIndex: 0, data: calculateMA(20), smooth: true, symbol: 'none', lineStyle: { color: '#ff69b4', width: 1 } },
-      { type: 'bar', xAxisIndex: 1, yAxisIndex: 1, data: volumes, itemStyle: { color: (p) => klineData[p.dataIndex][1] >= klineData[p.dataIndex][0] ? '#f44336' : '#00d26a' } }
-    ]
+    }]
   })
 }
+
 
 
 const initChart = () => {
@@ -765,11 +703,10 @@ watch(() => stockCode.value, () => {
 }
 
 .chart-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--card-bg);
   margin: 12px;
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .chart-tabs {
@@ -780,30 +717,23 @@ watch(() => stockCode.value, () => {
 
 .chart-tab {
   flex: 1;
-  padding: 10px 8px;
+  padding: 8px;
   border: none;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
+  background: var(--bg-color);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.3s;
-  font-weight: 500;
 }
 
 .chart-tab.active {
-  background: rgba(255, 255, 255, 0.95);
-  color: #667eea;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: var(--primary-color);
+  color: white;
 }
 
 .chart-container {
-  height: 240px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 12px;
-  backdrop-filter: blur(10px);
+  height: 200px;
 }
 
 
