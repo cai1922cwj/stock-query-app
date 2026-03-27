@@ -210,9 +210,12 @@ onMounted(() => {
 
 .market-scroll {
   overflow-x: auto;
+  overflow-y: hidden;
   margin: 0 -16px;
-  padding: 0 16px;
+  padding: 4px 16px;
   -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
+  display: block;
 }
 
 .market-scroll::-webkit-scrollbar {
@@ -221,9 +224,11 @@ onMounted(() => {
 
 .market-list {
   display: flex;
+  flex-direction: row;
   gap: 12px;
-  width: max-content;  /* 添加这一行 */
+  flex-wrap: nowrap;
 }
+
 
 
 .stock-list {
