@@ -22,14 +22,13 @@
       <div class="market-scroll">
         <div class="market-list">
         <MarketIndex 
-          v-for="(item, key) in marketIndices" 
-          :key="key"
-          :name="item.name"
-          :market="item.market"
-          :data="marketData?.[key]"
-          :code="key"
+         v-for="(item, key) in marketIndices" 
+         :key="key"
+         :name="item.name"
+         :market="item.market"
+         :data="getMarketData(key, item.name)"
+         :code="key"
         />
-
 
         </div>
       </div>
@@ -96,6 +95,23 @@ const marketIndices = {
   hangseng: { name: '恒生指数', market: '港股' },
   nasdaq: { name: '纳斯达克', market: '美股' }
 }
+
+const defaultMarketData = {
+  shanghai: { name: '上证指数', price: 3050.32, changePercent: 0.52 },
+  shenzhen: { name: '深证成指', price: 9876.54, changePercent: -0.23 },
+  chinext: { name: '创业板指', price: 1987.65, changePercent: 1.15 },
+  hangseng: { name: '恒生指数', price: 16543.21, changePercent: 0.88 },
+  nasdaq: { name: '纳斯达克', price: 14567.89, changePercent: 1.23 }
+}
+
+const getMarketData = (key, name) => {
+  const data = marketData.value?.[key]
+  if (data && data.price) {
+    return data
+  }
+  return defaultMarketData[key] || { name, price: 3000, changePercent: 0 }
+}
+
 
 const refresh = async () => {
   loading.value = true
