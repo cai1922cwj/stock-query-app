@@ -7,13 +7,16 @@
     <div class="index-value">{{ displayValue }}</div>
     <div class="index-change">{{ displayChange }}</div>
     <div class="mini-chart">
-      <svg viewBox="0 0 100 30" class="chart-svg">
+      <svg viewBox="0 0 100 30" class="trend-line" preserveAspectRatio="none">
         <polyline
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          :points="chartPoints"
-        />
+         :points="generateTrendPoints()"
+         fill="none"
+         :stroke="getTrendColor()"
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         vector-effect="non-scaling-stroke"
+         />
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" style="stop-color:currentColor;stop-opacity:0.3" />
@@ -146,14 +149,19 @@ const chartPoints = computed(() => {
   width: 100%;
   height: 30px;
   margin-top: 8px;
-  overflow: hidden;    /* 添加：防止图表溢出 */
+  overflow: hidden;
+  position: relative;
 }
 
 .trend-line {
   width: 100%;
   height: 100%;
-  display: block;      /* 添加：确保正确显示 */
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
+
 
 
 .chart-svg {
