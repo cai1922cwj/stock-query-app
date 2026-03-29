@@ -391,7 +391,14 @@ export const stockApi = {
   // 获取大宗交易数据
   getBlockTrade: (code) => {
     const trades = []
-    const dates = ['2024-03-26', '2024-03-25', '2024-03-22', '2024-03-21', '2024-03-20']
+    // 使用2026年3月近期日期
+    const today = new Date()
+    const dates = []
+    for (let i = 0; i < 5; i++) {
+      const date = new Date(today)
+      date.setDate(date.getDate() - i)
+      dates.push(`${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`)
+    }
     const buyers = ['机构专用', '中信证券', '华泰证券', '国泰君安', '招商证券', '中金公司']
     const sellers = ['中信证券', '机构专用', '华泰证券', '海通证券', '广发证券', '申万宏源']
     
@@ -421,15 +428,18 @@ export const stockApi = {
 
   // 获取公司资讯
   getCompanyNews: (code, name) => {
+    const today = new Date()
+    const formatDate = (d) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    
     const newsTemplates = [
-      { title: `${name}发布2024年第一季度业绩预告，净利润同比增长30%`, source: '证券时报', date: '03-26' },
-      { title: `${name}与某知名企业签署战略合作协议`, source: '上海证券报', date: '03-25' },
-      { title: `${name}获得重要行业资质认证，市场竞争力进一步提升`, source: '中国证券报', date: '03-22' },
-      { title: `${name}董事会审议通过2023年度利润分配方案`, source: '证券时报', date: '03-21' },
-      { title: `${name}新产品正式发布，市场反响热烈`, source: '经济观察报', date: '03-20' },
-      { title: `${name}入选行业龙头企业榜单，品牌价值持续提升`, source: '21世纪经济报道', date: '03-19' },
-      { title: `${name}完成新一轮融资，加速业务扩张步伐`, source: '财联社', date: '03-18' },
-      { title: `${name}荣获行业创新奖，技术实力获认可`, source: '每日经济新闻', date: '03-15' }
+      { title: `${name}发布2026年第一季度业绩预告，净利润同比增长35%`, source: '证券时报', date: formatDate(today) },
+      { title: `${name}与某知名企业签署战略合作协议`, source: '上海证券报', date: formatDate(new Date(today - 86400000)) },
+      { title: `${name}获得重要行业资质认证，市场竞争力进一步提升`, source: '中国证券报', date: formatDate(new Date(today - 172800000)) },
+      { title: `${name}董事会审议通过2025年度利润分配方案`, source: '证券时报', date: formatDate(new Date(today - 259200000)) },
+      { title: `${name}新产品正式发布，市场反响热烈`, source: '经济观察报', date: formatDate(new Date(today - 345600000)) },
+      { title: `${name}入选行业龙头企业榜单，品牌价值持续提升`, source: '21世纪经济报道', date: formatDate(new Date(today - 432000000)) },
+      { title: `${name}完成新一轮融资，加速业务扩张步伐`, source: '财联社', date: formatDate(new Date(today - 518400000)) },
+      { title: `${name}荣获行业创新奖，技术实力获认可`, source: '每日经济新闻', date: formatDate(new Date(today - 604800000)) }
     ]
     
     // 根据code选择不同的新闻
@@ -441,7 +451,11 @@ export const stockApi = {
     const selectedNews = []
     for (let i = 0; i < 4; i++) {
       const index = (seed + i * 3) % newsTemplates.length
-      selectedNews.push(newsTemplates[index])
+      selectedNews.push({
+        ...newsTemplates[index],
+        url: `https://www.baidu.com/s?wd=${encodeURIComponent(newsTemplates[index].title)}`,
+        id: `${code}_news_${i}`
+      })
     }
     
     return selectedNews
@@ -471,7 +485,9 @@ export const stockApi = {
       const index = (seed + i * 2) % discussions.length
       selectedDiscussions.push({
         ...discussions[index],
-        user: discussions[index].user + String.fromCharCode(65 + (seed + i) % 26)
+        user: discussions[index].user + String.fromCharCode(65 + (seed + i) % 26),
+        id: `${code}_disc_${i}`,
+        url: `https://guba.eastmoney.com/search?keyword=${encodeURIComponent(name)}`
       })
     }
     

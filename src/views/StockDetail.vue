@@ -204,13 +204,20 @@
       <section class="news-section">
         <h3 class="section-title">公司资讯</h3>
         <div class="news-list">
-          <div v-for="(news, index) in stockData.news" :key="index" class="news-item">
+          <a 
+            v-for="(news, index) in stockData.news" 
+            :key="index" 
+            class="news-item"
+            :href="news.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <h4 class="news-title">{{ news.title }}</h4>
             <div class="news-meta">
               <span class="news-source">{{ news.source }}</span>
               <span class="news-date">{{ news.date }}</span>
             </div>
-          </div>
+          </a>
         </div>
       </section>
 
@@ -218,7 +225,14 @@
       <section class="discussion-section">
         <h3 class="section-title">网页讨论</h3>
         <div class="discussion-list">
-          <div v-for="(item, index) in stockData.discussions" :key="index" class="discussion-item">
+          <a 
+            v-for="(item, index) in stockData.discussions" 
+            :key="index" 
+            class="discussion-item"
+            :href="item.url"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <div class="discussion-header">
               <span class="discussion-user">{{ item.user }}</span>
               <span class="discussion-time">{{ item.time }}</span>
@@ -227,7 +241,7 @@
             <div class="discussion-footer">
               <span class="discussion-likes">👍 {{ item.likes }}</span>
             </div>
-          </div>
+          </a>
         </div>
       </section>
     </template>
@@ -767,9 +781,18 @@ watch(() => stockCode.value, () => {
 }
 
 .news-item {
+  display: block;
   padding: 12px;
   background: var(--bg-color);
   border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.news-item:hover {
+  background: var(--primary-light);
+  transform: translateX(4px);
 }
 
 .news-title {
@@ -803,9 +826,18 @@ watch(() => stockCode.value, () => {
 }
 
 .discussion-item {
+  display: block;
   padding: 12px;
   background: var(--bg-color);
   border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.discussion-item:hover {
+  background: var(--primary-light);
+  transform: translateX(4px);
 }
 
 .discussion-header {
