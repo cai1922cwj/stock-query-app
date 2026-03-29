@@ -485,7 +485,7 @@ watch(() => stockCode.value, () => {
 <style scoped>
 .stock-detail {
   min-height: 100vh;
-  background: var(--bg-color);
+  background: #f5f5f5;
   padding-bottom: 20px;
 }
 
@@ -494,7 +494,7 @@ watch(() => stockCode.value, () => {
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  background: var(--card-bg);
+  background: #ffffff;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -553,7 +553,7 @@ watch(() => stockCode.value, () => {
 }
 
 .price-section {
-  background: var(--card-bg);
+  background: #ffffff;
   padding: 20px 16px;
   text-align: center;
 }
@@ -586,14 +586,14 @@ watch(() => stockCode.value, () => {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: var(--border-color);
+  background: #e0e0e0;
   margin: 12px;
   border-radius: 12px;
   overflow: hidden;
 }
 
 .data-item {
-  background: var(--card-bg);
+  background: #ffffff;
   padding: 12px 8px;
   text-align: center;
 }
@@ -612,10 +612,11 @@ watch(() => stockCode.value, () => {
 }
 
 .chart-section {
-  background: var(--card-bg);
+  background: #ffffff;
   margin: 12px;
   border-radius: 12px;
   padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .chart-tabs {
@@ -655,10 +656,11 @@ watch(() => stockCode.value, () => {
 .block-trade-section,
 .news-section,
 .discussion-section {
-  background: var(--card-bg);
+  background: #ffffff;
   margin: 12px;
   border-radius: 12px;
   padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .section-title {
@@ -722,9 +724,10 @@ watch(() => stockCode.value, () => {
 }
 
 .block-trade-item {
-  background: var(--bg-color);
+  background: #f8f9fa;
   border-radius: 8px;
   padding: 12px;
+  margin-bottom: 8px;
 }
 
 .trade-header {
@@ -783,15 +786,16 @@ watch(() => stockCode.value, () => {
 .news-item {
   display: block;
   padding: 12px;
-  background: var(--bg-color);
+  background: #f8f9fa;
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-bottom: 8px;
 }
 
 .news-item:hover {
-  background: var(--primary-light);
+  background: #e3f2fd;
   transform: translateX(4px);
 }
 
@@ -828,15 +832,16 @@ watch(() => stockCode.value, () => {
 .discussion-item {
   display: block;
   padding: 12px;
-  background: var(--bg-color);
+  background: #f8f9fa;
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-bottom: 8px;
 }
 
 .discussion-item:hover {
-  background: var(--primary-light);
+  background: #e3f2fd;
   transform: translateX(4px);
 }
 
