@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 头部 -->
     <header class="header">
-      <h1 class="logo">行情查询@蔡^_^</h1>
+      <h1 class="logo">行情查询@蔡孑夫</h1>
       <div class="header-actions">
         <button class="icon-btn" @click="refresh">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
