@@ -2,17 +2,20 @@
   <div class="stock-card" @click="goToDetail">
     <div class="stock-info">
       <div class="stock-name">{{ stock.name }}</div>
-      <div class="stock-code">{{ stock.code }}</div>
+      <div class="stock-code">{{ formatCode(stock.code) }}</div>
     </div>
-    <div class="stock-price" :class="priceClass">
-      <div class="current-price">{{ formatPrice(stock.price) }}</div>
-      <div class="price-change">{{ formatChange(stock.changePercent) }}</div>
+    <div class="stock-price">
+      <div class="price" :class="getPriceClass(stock.changePercent)">
+        {{ stock.price?.toFixed(2) || '--' }}
+      </div>
+      <div class="change" :class="getPriceClass(stock.changePercent)">
+        {{ formatChange(stock.changePercent) }}
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
@@ -24,24 +27,26 @@ const props = defineProps({
 
 const router = useRouter()
 
-const priceClass = computed(() => {
-  if (!props.stock.changePercent) return 'flat'
-  return props.stock.changePercent > 0 ? 'up' : 'down'
-})
-
-const formatPrice = (price) => {
-  if (!price) return '--'
-  return price.toFixed(2)
-}
-
-const formatChange = (change) => {
-  if (!change) return '0.00%'
-  const sign = change > 0 ? '+' : ''
-  return `${sign}${change.toFixed(2)}%`
-}
-
 const goToDetail = () => {
   router.push(`/stock/${props.stock.code}`)
+}
+
+const formatCode = (code) => {
+  if (!code) return '--'
+  return code.replace(/^(sh|sz|hk|us)/, '').toUpperCase()
+}
+
+const formatChange = (changePercent) => {
+  if (changePercent === undefined || changePercent === null) return '--'
+  const sign = changePercent >= 0 ? '+' : ''
+  return `${sign}${changePercent.toFixed(2)}%`
+}
+
+const getPriceClass = (changePercent) => {
+  if (changePercent === undefined || changePercent === null) return 'flat'
+  if (changePercent > 0) return 'up'
+  if (changePercent < 0) return 'down'
+  return 'flat'
 }
 </script>
 
@@ -81,7 +86,7 @@ const goToDetail = () => {
 }
 
 .stock-code {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-secondary);
 }
 
@@ -89,25 +94,16 @@ const goToDetail = () => {
   text-align: right;
 }
 
-.current-price {
+.price {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 4px;
 }
 
-.price-change {
+.change {
   font-size: 13px;
-}
-
-.up {
-  color: var(--danger-color);
-}
-
-.down {
-  color: var(--success-color);
-}
-
-.flat {
-  color: var(--text-secondary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.05);
 }
 </style>

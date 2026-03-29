@@ -1,39 +1,25 @@
 <template>
-  <div class="market-index" :class="trendClass">
+  <div class="market-index" @click="goToDetail">
     <div class="index-header">
-      <span class="index-name">{{ name }}</span>
-      <span class="market-label">{{ market }}</span>
+      <span class="index-name">{{ data?.name || name }}</span>
+      <span class="index-tag" :class="market">{{ marketLabel }}</span>
     </div>
-    <div class="index-value">{{ displayValue }}</div>
-    <div class="index-change">{{ displayChange }}</div>
+    <div class="index-price" :class="getPriceClass(data?.changePercent)">
+      {{ data?.price ? data.price.toFixed(2) : '--' }}
+    </div>
+    <div class="index-change" :class="getPriceClass(data?.changePercent)">
+      {{ formatChange(data?.changePercent) }}
+    </div>
+    <!-- 迷你趋势图 -->
     <div class="mini-chart">
-      <svg viewBox="0 0 100 30" class="trend-line" preserveAspectRatio="none">
-        <polyline
-         :points="generateTrendPoints()"
-         fill="none"
-         :stroke="getTrendColor()"
-         stroke-width="2"
-         stroke-linecap="round"
-         stroke-linejoin="round"
-         vector-effect="non-scaling-stroke"
-         />
-        <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:currentColor;stop-opacity:0.3" />
-            <stop offset="100%" style="stop-color:currentColor;stop-opacity:0" />
-          </linearGradient>
-        </defs>
-        <polygon
-          :points="`${chartPoints}, 100,30 0,30`"
-          fill="url(#gradient)"
-        />
-      </svg>
+      <div class="trend-bar" :class="getTrendClass()"></div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   name: String,
@@ -45,15 +31,46 @@ const props = defineProps({
   code: String
 })
 
-const displayValue = computed(() => {
-  return props.data?.price?.toFixed(2) || '--'
+const router = useRouter()
+
+const marketLabel = computed(() => {
+  const labels = {
+    'A股': 'A股',
+    '港股': '港股',
+    '美股': '美股'
+  }
+  return labels[props.market] || props.market
 })
 
-const displayChange = computed(() => {
-  if (!props.data?.changePercent) return '0.00%'
-  const sign = props.data.changePercent > 0 ? '+' : ''
-  return `${sign}${props.data.changePercent.toFixed(2)}%`
-})
+// 生成模拟趋势数据
+const generateTrendPoints = () => {
+  const points = []
+  const basePrice = props.data?.price || 3000
+  const volatility = basePrice * 0.02
+  
+  for (let i = 0; i <= 20; i++) {
+    const x = i * 5
+    const randomChange = (Math.random() - 0.5) * volatility
+    const y = 15 - (randomChange / volatility) * 10
+    points.push(`${x},${Math.max(2, Math.min(28, y))}`)
+  }
+  
+  return points.join(' ')
+}
+
+const getTrendColor = () => {
+  const changePercent = props.data?.changePercent
+  if (changePercent > 0) return '#f44336'
+  if (changePercent < 0) return '#4caf50'
+  return '#999'
+}
+
+const getTrendClass = () => {
+  const changePercent = props.data?.changePercent
+  if (changePercent > 0) return 'up'
+  if (changePercent < 0) return 'down'
+  return 'flat'
+}
 
 const goToDetail = () => {
   const codeMap = {
@@ -69,29 +86,18 @@ const goToDetail = () => {
   }
 }
 
+const formatChange = (changePercent) => {
+  if (changePercent === undefined || changePercent === null) return '--'
+  const sign = changePercent >= 0 ? '+' : ''
+  return `${sign}${changePercent.toFixed(2)}%`
+}
 
-
-  
-const trendClass = computed(() => {
-  if (!props.data?.changePercent) return 'flat'
-  return props.data.changePercent > 0 ? 'up' : 'down'
-})
-
-const chartPoints = computed(() => {
-  // 生成模拟的迷你图表数据
-  const points = []
-  const baseValue = props.data?.price || 3000
-  const volatility = baseValue * 0.02
-  
-  for (let i = 0; i <= 10; i++) {
-    const x = i * 10
-    const randomChange = (Math.random() - 0.5) * volatility
-    const y = 15 - (randomChange / volatility) * 10
-    points.push(`${x},${Math.max(2, Math.min(28, y))}`)
-  }
-  
-  return points.join(' ')
-})
+const getPriceClass = (changePercent) => {
+  if (changePercent === undefined || changePercent === null) return 'flat'
+  if (changePercent > 0) return 'up'
+  if (changePercent < 0) return 'down'
+  return 'flat'
+}
 </script>
 
 <style scoped>
@@ -111,11 +117,13 @@ const chartPoints = computed(() => {
   vertical-align: top;
 }
 
-
-
 .market-index:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.market-index:active {
+  transform: scale(0.98);
 }
 
 .index-header {
@@ -131,70 +139,59 @@ const chartPoints = computed(() => {
   color: var(--text-primary);
 }
 
-.market-label {
-  font-size: 11px;
-  padding: 2px 6px;
-  background: var(--bg-color);
-  border-radius: 4px;
-  color: var(--text-secondary);
+.index-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 500;
 }
 
-.index-value {
-  font-size: 20px;
+.index-tag.港股 {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.index-tag.美股 {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.index-price {
+  font-size: 22px;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .index-change {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .mini-chart {
   width: 100%;
-  height: 30px;
-  margin-top: 8px;
+  height: 4px;
+  margin-top: 12px;
+  border-radius: 2px;
   overflow: hidden;
-  position: relative;
+  background: #e0e0e0;
 }
 
-.trend-line {
+.trend-bar {
   width: 100%;
   height: 100%;
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
+  border-radius: 2px;
 }
 
-
-
-.chart-svg {
-  width: 100%;
-  height: 100%;
+.trend-bar.up {
+  background: linear-gradient(90deg, #ff6b6b, #f44336);
 }
 
-.up {
-  color: var(--danger-color);
+.trend-bar.down {
+  background: linear-gradient(90deg, #4caf50, #2e7d32);
 }
 
-.up .chart-svg {
-  color: var(--danger-color);
-}
-
-.down {
-  color: var(--success-color);
-}
-
-.down .chart-svg {
-  color: var(--success-color);
-}
-
-.flat {
-  color: var(--text-secondary);
-}
-
-.flat .chart-svg {
-  color: var(--text-secondary);
+.trend-bar.flat {
+  background: #999;
 }
 </style>

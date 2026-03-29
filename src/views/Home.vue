@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 头部 -->
     <header class="header">
-      <h1 class="logo">蔡孑夫@股票动态</h1>
+      <h1 class="logo">行情查询</h1>
       <div class="header-actions">
         <button class="icon-btn" @click="refresh">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -21,15 +21,14 @@
       </div>
       <div class="market-scroll">
         <div class="market-list">
-        <MarketIndex 
-         v-for="(item, key) in marketIndices" 
-         :key="key"
-         :name="item.name"
-         :market="item.market"
-         :data="getMarketData(key, item.name)"
-         :code="key"
-        />
-
+          <MarketIndex 
+            v-for="(item, key) in marketIndices" 
+            :key="key"
+            :name="item.name"
+            :market="item.market"
+            :data="getMarketData(key, item.name)"
+            :code="key"
+          />
         </div>
       </div>
     </section>
@@ -111,7 +110,6 @@ const getMarketData = (key, name) => {
   }
   return defaultMarketData[key] || { name, price: 3000, changePercent: 0 }
 }
-
 
 const refresh = async () => {
   loading.value = true
@@ -230,8 +228,6 @@ onMounted(() => {
   margin: 0 -16px;
   padding: 4px 16px;
   -webkit-overflow-scrolling: touch;
-  white-space: nowrap;
-  display: block;
 }
 
 .market-scroll::-webkit-scrollbar {
@@ -242,10 +238,9 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   gap: 12px;
-  flex-wrap: nowrap;
+  min-height: 150px;
+  padding: 8px 0;
 }
-
-
 
 .stock-list {
   display: flex;
