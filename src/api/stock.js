@@ -116,6 +116,9 @@ export const stockApi = {
       { code: 'sh601728', name: '中国电信', market: 'A股' },
       { code: 'sh600050', name: '中国联通', market: 'A股' },
       { code: 'sh601728', name: '中国移动', market: 'A股' },
+      { code: 'sh601138', name: '工业富联', market: 'A股' },
+
+      
       
       // 用户提到的股票
       { code: 'sz002053', name: '云南能投', market: 'A股' },
