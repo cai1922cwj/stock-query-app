@@ -73,14 +73,22 @@ const getTrendClass = () => {
 }
 
 const goToDetail = () => {
-  const codeMap = {
-    shanghai: 'sh000001',
-    shenzhen: 'sz399001',
-    chinext: 'sz399006',
-    hangseng: 'hkHSI',
-    nasdaq: 'usIXIC'
+  // 优先使用传入的code，如果没有则根据name查找
+  if (props.code) {
+    router.push(`/stock/${props.code}`)
+    return
   }
-  const code = props.code || codeMap[props.name]
+  
+  // 根据中文名称查找对应的代码
+  const nameToCodeMap = {
+    '上证指数': 'sh000001',
+    '深证成指': 'sz399001',
+    '创业板指': 'sz399006',
+    '恒生指数': 'hkHSI',
+    '纳斯达克': 'usIXIC'
+  }
+  
+  const code = nameToCodeMap[props.name]
   if (code) {
     router.push(`/stock/${code}`)
   }

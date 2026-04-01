@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 头部 -->
     <header class="header">
-      <h1 class="logo">云南能源集团@云维股份行情</h1>
+      <h1 class="logo">行情查询</h1>
       <div class="header-actions">
         <button class="icon-btn" @click="refresh">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -21,13 +21,13 @@
       </div>
       <div class="market-scroll">
         <div class="market-list">
-          <MarketIndex 
-            v-for="(item, key) in marketIndices" 
+        <MarketIndex
+            v-for="(item, key) in marketIndices"
             :key="key"
             :name="item.name"
             :market="item.market"
             :data="getMarketData(key, item.name)"
-            :code="key"
+            :code="item.code"
           />
         </div>
       </div>
@@ -88,11 +88,11 @@ const favoriteList = computed(() => stockStore.favoriteList)
 const hotStocks = computed(() => stockStore.hotStocks)
 
 const marketIndices = {
-  shanghai: { name: '上证指数', market: 'A股' },
-  shenzhen: { name: '深证成指', market: 'A股' },
-  chinext: { name: '创业板指', market: 'A股' },
-  hangseng: { name: '恒生指数', market: '港股' },
-  nasdaq: { name: '纳斯达克', market: '美股' }
+  shanghai: { name: '上证指数', market: 'A股', code: 'sh000001' },
+  shenzhen: { name: '深证成指', market: 'A股', code: 'sz399001' },
+  chinext: { name: '创业板指', market: 'A股', code: 'sz399006' },
+  hangseng: { name: '恒生指数', market: '港股', code: 'hkHSI' },
+  nasdaq: { name: '纳斯达克', market: '美股', code: 'usIXIC' }
 }
 
 const defaultMarketData = {

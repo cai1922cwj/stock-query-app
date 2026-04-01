@@ -151,24 +151,48 @@ const marketTabs = [
 const currentTab = ref('A股')
 const updateTime = ref(dayjs().format('HH:mm:ss'))
 
-// 模拟指数数据
-const indexData = {
-  'A股': [
-    { code: 'sh000001', name: '上证指数', price: 3050.32, changePercent: 0.52 },
-    { code: 'sz399001', name: '深证成指', price: 9876.54, changePercent: -0.23 },
-    { code: 'sz399006', name: '创业板指', price: 1987.65, changePercent: 1.15 },
-    { code: 'sh000016', name: '上证50', price: 2456.78, changePercent: 0.35 }
-  ],
-  '港股': [
-    { code: 'hk00700', name: '恒生指数', price: 16543.21, changePercent: 0.88 },
-    { code: 'hk00700', name: '国企指数', price: 5678.90, changePercent: 0.65 },
-    { code: 'hk00700', name: '红筹指数', price: 3456.78, changePercent: -0.12 }
-  ],
-  '美股': [
-    { code: 'usAAPL', name: '道琼斯', price: 35678.90, changePercent: 0.45 },
-    { code: 'usAAPL', name: '纳斯达克', price: 14567.89, changePercent: 1.23 },
-    { code: 'usAAPL', name: '标普500', price: 4567.89, changePercent: 0.78 }
-  ]
+// 从API获取的真实指数数据
+const realTimeIndices = ref({
+  'sh000001': { code: 'sh000001', name: '上证指数', price: 0, changePercent: 0 },
+  'sz399001': { code: 'sz399001', name: '深证成指', price: 0, changePercent: 0 },
+  'sz399006': { code: 'sz399006', name: '创业板指', price: 0, changePercent: 0 },
+  'sh000016': { code: 'sh000016', name: '上证50', price: 0, changePercent: 0 },
+  'hkHSI': { code: 'hkHSI', name: '恒生指数', price: 0, changePercent: 0 },
+  'usIXIC': { code: 'usIXIC', name: '纳斯达克', price: 0, changePercent: 0 }
+})
+
+// 指数数据映射
+const indexData = computed(() => {
+  return {
+    'A股': [
+      realTimeIndices.value['sh000001'],
+      realTimeIndices.value['sz399001'],
+      realTimeIndices.value['sz399006'],
+      realTimeIndices.value['sh000016']
+    ],
+    '港股': [
+      realTimeIndices.value['hkHSI']
+    ],
+    '美股': [
+      realTimeIndices.value['usIXIC']
+    ]
+  }
+})
+
+// 加载真实指数数据
+const loadIndexData = async () => {
+  try {
+    const marketData = await stockApi.getMarketOverview()
+    if (marketData) {
+      if (marketData.shanghai) realTimeIndices.value['sh000001'] = { ...realTimeIndices.value['sh000001'], ...marketData.shanghai }
+      if (marketData.shenzhen) realTimeIndices.value['sz399001'] = { ...realTimeIndices.value['sz399001'], ...marketData.shenzhen }
+      if (marketData.chinext) realTimeIndices.value['sz399006'] = { ...realTimeIndices.value['sz399006'], ...marketData.chinext }
+      if (marketData.hangseng) realTimeIndices.value['hkHSI'] = { ...realTimeIndices.value['hkHSI'], ...marketData.hangseng }
+      if (marketData.nasdaq) realTimeIndices.value['usIXIC'] = { ...realTimeIndices.value['usIXIC'], ...marketData.nasdaq }
+    }
+  } catch (error) {
+    console.error('加载指数数据失败:', error)
+  }
 }
 
 // 模拟榜单数据
@@ -203,7 +227,7 @@ const generateMockStocks = (market, type, count = 10) => {
   }
 }
 
-const currentIndices = computed(() => indexData[currentTab.value] || [])
+const currentIndices = computed(() => indexData.value[currentTab.value] || [])
 
 const gainers = computed(() => generateMockStocks(currentTab.value, 'gainer'))
 const losers = computed(() => generateMockStocks(currentTab.value, 'loser'))
@@ -242,10 +266,18 @@ const goToStock = (code) => {
 }
 
 onMounted(() => {
-  // 定时更新时间
+  // 加载指数数据
+  loadIndexData()
+  
+  // 定时更新时间和数据
   setInterval(() => {
     updateTime.value = dayjs().format('HH:mm:ss')
   }, 1000)
+  
+  // 每30秒刷新一次指数数据
+  setInterval(() => {
+    loadIndexData()
+  }, 30000)
 })
 </script>
 
