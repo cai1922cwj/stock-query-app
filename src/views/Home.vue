@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 头部 -->
     <header class="header">
-      <h1 class="logo">能源集团⚡云维股份⚡云南能投</h1>
+      <h1 class="logo">⚡能源⚡云维股份⚡云南能投</h1>
       <div class="header-actions">
         <button class="icon-btn" @click="refresh">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
