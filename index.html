@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1976d2">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>股票查询APP</title>
+  <link rel="icon" type="image/svg+xml" href="./vite.svg?v=4">
+  <script>
+    // GitHub Pages SPA 路由支持
+    (function() {
+      const redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect !== location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
+  <script type="module" crossorigin src="/stock-query-app/assets/js/index-D6wxykf0.js"></script>
+  <link rel="stylesheet" crossorigin href="/stock-query-app/assets/css/index.css">
+<link rel="manifest" href="/stock-query-app/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/stock-query-app/registerSW.js"></script></head>
+<body>
+  <div id="app"></div>
+</body>
+</html>
