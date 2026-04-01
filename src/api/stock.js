@@ -117,8 +117,11 @@ export const stockApi = {
       { code: 'sh600050', name: '中国联通', market: 'A股' },
       { code: 'sh601728', name: '中国移动', market: 'A股' },
       { code: 'sh601138', name: '工业富联', market: 'A股' },
-
-      
+      { code: 'sh688256', name: '寒武纪', market: 'A股' },
+      { code: 'sz300308', name: '中际旭创', market: 'A股' },   
+      { code: 'sz000977', name: '浪潮信息', market: 'A股' },
+      { code: 'sz002230', name: '科大讯飞', market: 'A股' },
+      { code: 'sz300624', name: '万兴科技', market: 'A股' },
       
       // 用户提到的股票
       { code: 'sz002053', name: '云南能投', market: 'A股' },
